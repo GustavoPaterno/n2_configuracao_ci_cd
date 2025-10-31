@@ -29,3 +29,12 @@ services:
         forgejo-runner register --no-interactive --instance http://forgejo:3000 --token 1aE1btpFks91nFJeVCcNBpNqmK4QPvk3XeWZhZ5g --name teste2 --labels docker:docker://node:20-bookworm
         forgejo-runner daemon
       "
+
+      
+  registry:
+    image: registry:2
+    container_name: forgejo-registry
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./registry:/var/lib/registry
