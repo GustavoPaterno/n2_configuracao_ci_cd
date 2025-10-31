@@ -1,4 +1,4 @@
-version: '3.9'
+# version: '3.9'
 
 services:
   forgejo:
@@ -12,14 +12,20 @@ services:
       - "3001:3000"
     volumes:
       - ./data:/data
-
+      
   forgejo-runner:
-    image: code.forgejo.org/forgejo/runner:latest
-    container_name: forgejo-runner
+    image: code.forgejo.org/forgejo/runner:11.2
+    container_name: forgejo-runner2
     restart: unless-stopped
     privileged: true
+    user: root
+    depends_on:
+      - forgejo
     volumes:
       - ./runner:/data
       - /var/run/docker.sock:/var/run/docker.sock
-    env_file: .env
- #
+    entrypoint: >
+      bash -c "
+        forgejo-runner register --no-interactive --instance http://forgejo:3000 --token 1aE1btpFks91nFJeVCcNBpNqmK4QPvk3XeWZhZ5g --name teste2 --labels docker:docker://node:20-bookworm
+        forgejo-runner daemon
+      "
